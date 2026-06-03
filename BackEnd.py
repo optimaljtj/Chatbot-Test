@@ -6,9 +6,14 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import os
+from dotenv import load_dotenv
+
+# .env 파일 로드
+load_dotenv()
 
 app = FastAPI()
 db = {"text": [], "vec": []}
+
 embed_model = SentenceTransformer('jhgan/ko-sroberta-multitask')
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=os.getenv("GEMINI_API_KEY"))
 
