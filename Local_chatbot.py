@@ -16,14 +16,14 @@ def get_models():
 
 embed_model, llm = get_models()
 
-st.title("🛡️ 사규 챗봇 (검색 정확도 향상)")
+st.title("사규 챗봇 ")
 
 if "db" not in st.session_state: st.session_state.db = None
 
 with st.sidebar:
     st.header("사규 파일 관리")
     uploaded = st.file_uploader("Word 파일 업로드", type=["docx"])
-    if uploaded and st.button("🚀 로컬 인덱싱 시작"):
+    if uploaded and st.button("로컬 인덱싱 시작"):
         text = docx2txt.process(uploaded)
         # [개선] 텍스트를 더 작은 단위로 쪼개고 겹치게 하여 맥락 유지
         lines = [line.strip() for line in text.split('\n') if len(line.strip()) > 10]
@@ -31,7 +31,7 @@ with st.sidebar:
         paragraphs = [" ".join(lines[i:i+2]) for i in range(len(lines)-1)]
         embeddings = embed_model.encode(paragraphs)
         st.session_state.db = {"text": paragraphs, "vec": embeddings}
-        st.success(f"✅ {len(paragraphs)}개 항목 인덱싱 완료")
+        st.success(f"{len(paragraphs)}개 항목 인덱싱 완료")
 
 if prompt := st.chat_input("사규에 대해 질문하세요..."):
     if st.session_state.db:
